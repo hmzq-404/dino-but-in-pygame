@@ -12,16 +12,18 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # Sets a title for the window
 pygame.display.set_caption("Dino but in Pygame")
 
-import assets
-import sprites
+from assets import *
+from sprites import *
 
 # Returns a surface
 # Anti-Alias means to smooth the edges of the text (shouldnt be used with pixel art)
-score = assets.pixel_font.render("Heyo", False, (255, 0, 0))
-x = 600
+score = pixel_font.render("Heyo", False, (255, 0, 0))
+
+snail = Snail()
+player = Player()
+
 # Game loop that draws each frame till the game window is closed
 while True:
-    x -= 5
     # Event loop that iterates through all events that were triggered
     for event in pygame.event.get():
         # If the "X" button is pressed
@@ -29,18 +31,23 @@ while True:
             # Exits the python interpreter completely and is better than pygame.quit since it instantly closes everything
             sys.exit()
 
+    snail.update()
+    # colliderect() Returns a 0 or 1 depending on whether or not the two rects are colliding
+    # collidepoint() checks collision between point and rect
+    if player.rect.colliderect(snail.rect):
+        print("collision")
+
     # Used to transfer a surface to the display surface
+    # A surface is drawn in the position of its rectangle
     # Note: surfaces previously blitted to the screen get drawn over
-    screen.blit(assets.sky, (0, 0))
-    screen.blit(assets.ground, (
+    screen.blit(sky_surface, (0, 0))
+    screen.blit(ground_surface, (
         0, 
-        assets.sky.get_height()
+        sky_surface.get_height()
     ))
     screen.blit(score, ((SCREEN_WIDTH-score.get_width())/2, 50))
-    if x <= 0:
-        x = 600
-    screen.blit(assets.snail, (x, 250))
-
+    screen.blit(snail.surface, snail.rect)
+    screen.blit(player.surface, player.rect)
     # Updates the screen
     pygame.display.flip()
     # Sets maximum frame rate limit
