@@ -30,12 +30,16 @@ while True:
         if event.type == pygame.QUIT:
             # Exits the python interpreter completely and is better than pygame.quit since it instantly closes everything
             sys.exit()
+        # if event.type == pygame.MOUSEMOTION:
+        #     if player.rect.collidepoint(event.pos):
+        #         print("collision of mouse with player")
 
     snail.update()
-    # colliderect() Returns a 0 or 1 depending on whether or not the two rects are colliding
-    # collidepoint() checks collision between point and rect
-    if player.rect.colliderect(snail.rect):
-        print("collision")
+    # .colliderect() Returns a 0 or 1 depending on whether or not the two rects are colliding
+    # .collidepoint() checks collision between point and rect
+    # Two ways to get mouse position: 1. In the event handler 2. Using pygame.mouse.get_pos()
+    # if player.rect.colliderect(snail.rect):
+    #     print("collision of snail with player")
 
     # Used to transfer a surface to the display surface
     # A surface is drawn in the position of its rectangle
