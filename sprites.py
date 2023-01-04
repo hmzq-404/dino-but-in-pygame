@@ -33,6 +33,13 @@ class Player(pygame.sprite.Sprite):
             bottom=sky_surface.get_height(),
             left=50
         )
-    
+        self.gravity = 0
+
+    # Approach to gravity:
+    # Set it to 0
+    # Increase in each iteration of while loop and make the player fall vertically by that value..
+    # .. until the floor is reached
+    # If spacebar is pressed, set gravity to a negative number so that the player now moves upwards until gravity becomes a positive number
+    # This creates the effect of acceleration and deceleration
     def update(self):
         pass

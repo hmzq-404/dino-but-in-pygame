@@ -1,6 +1,8 @@
 from settings import * 
 import sys
 import pygame  
+# Module containing constants for keyboard input
+from pygame.locals import KEYDOWN, K_SPACE
 
 # Initializes the library
 pygame.init()
@@ -17,7 +19,12 @@ from sprites import *
 
 # Returns a surface
 # Anti-Alias means to smooth the edges of the text (shouldnt be used with pixel art)
-score = pixel_font.render("Heyo", False, (255, 0, 0))
+# The pygame.draw module is used to display shapes and lines
+score = 0
+score_surface = pixel_font.render(f"Score: {score}", False, (64, 64, 64))
+score_rect = score_surface.get_rect(
+    center=(SCREEN_WIDTH / 2, 50)
+)
 
 snail = Snail()
 player = Player()
@@ -33,6 +40,9 @@ while True:
         # if event.type == pygame.MOUSEMOTION:
         #     if player.rect.collidepoint(event.pos):
         #         print("collision of mouse with player")
+        # Checks if a key is pressed and whether or not that key is the space bar
+        elif event.type == KEYDOWN and event.key == K_SPACE:
+            player.gravity = -20
 
     snail.update()
     # .colliderect() Returns a 0 or 1 depending on whether or not the two rects are colliding
@@ -49,8 +59,12 @@ while True:
         0, 
         sky_surface.get_height()
     ))
-    screen.blit(score, ((SCREEN_WIDTH-score.get_width())/2, 50))
+    screen.blit(score_surface, score_rect)
     screen.blit(snail.surface, snail.rect)
+
+    player.gravity += 1
+    player.rect.move_ip((0, player.gravity))
+
     screen.blit(player.surface, player.rect)
     # Updates the screen
     pygame.display.flip()
