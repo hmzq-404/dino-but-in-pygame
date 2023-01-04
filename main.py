@@ -29,6 +29,7 @@ score_rect = score_surface.get_rect(
 snail = Snail()
 player = Player()
 
+
 # Game loop that draws each frame till the game window is closed
 while True:
     # Event loop that iterates through all events that were triggered
@@ -37,19 +38,26 @@ while True:
         if event.type == pygame.QUIT:
             # Exits the python interpreter completely and is better than pygame.quit since it instantly closes everything
             sys.exit()
-        # if event.type == pygame.MOUSEMOTION:
-        #     if player.rect.collidepoint(event.pos):
-        #         print("collision of mouse with player")
         # Checks if a key is pressed and whether or not that key is the space bar
         elif event.type == KEYDOWN and event.key == K_SPACE:
-            player.gravity = -20
+            if player.rect.bottom == sky_surface.get_height():
+                player.gravity = -20
+
+    # Approach to gravity:
+    # Set it to 0
+    # Increase in each iteration of while loop and make the player fall vertically by that value..
+    # If player goes below the floor, move to on the floor
+    # If spacebar is pressed, set gravity to a negative number so that the player now moves upwards until gravity becomes a positive number
+    # This creates the effect of acceleration and deceleration
+    player.gravity += 1
+    player.rect.move_ip((0, player.gravity))
+    if player.rect.bottom > sky_surface.get_height() :
+        player.rect.bottom = sky_surface.get_height()
 
     snail.update()
     # .colliderect() Returns a 0 or 1 depending on whether or not the two rects are colliding
     # .collidepoint() checks collision between point and rect
     # Two ways to get mouse position: 1. In the event handler 2. Using pygame.mouse.get_pos()
-    # if player.rect.colliderect(snail.rect):
-    #     print("collision of snail with player")
 
     # Used to transfer a surface to the display surface
     # A surface is drawn in the position of its rectangle
@@ -61,9 +69,6 @@ while True:
     ))
     screen.blit(score_surface, score_rect)
     screen.blit(snail.surface, snail.rect)
-
-    player.gravity += 1
-    player.rect.move_ip((0, player.gravity))
 
     screen.blit(player.surface, player.rect)
     # Updates the screen

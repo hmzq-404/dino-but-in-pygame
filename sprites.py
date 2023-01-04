@@ -3,6 +3,18 @@ from settings import SCREEN_WIDTH
 import pygame
 
 
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.surface = player_surface
+        self.rect = self.surface.get_rect(
+            bottom=sky_surface.get_height(),
+            left=50
+        )
+        self.gravity = 0
+
+
+
 class Snail(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -23,23 +35,3 @@ class Snail(pygame.sprite.Sprite):
         self.rect.move_ip(-5, 0)
         if self.rect.right <= 0:
             self.rect.left = SCREEN_WIDTH
-
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.surface = player_surface
-        self.rect = self.surface.get_rect(
-            bottom=sky_surface.get_height(),
-            left=50
-        )
-        self.gravity = 0
-
-    # Approach to gravity:
-    # Set it to 0
-    # Increase in each iteration of while loop and make the player fall vertically by that value..
-    # .. until the floor is reached
-    # If spacebar is pressed, set gravity to a negative number so that the player now moves upwards until gravity becomes a positive number
-    # This creates the effect of acceleration and deceleration
-    def update(self):
-        pass
